@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raise.dao.interDetailOp">
+
+    <resultMap id="interDetailResultMap" type="InterDetail">
+        <result column="company_id" property="companyId"></result>
+        <result column="inter_user" property="interUser"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <!--        -->
+    </resultMap>
+    <select id="selectByCompanyId" resultMap="interDetailResultMap">
+        SELECT * FROM ri_interdetail
+        <where>
+            is_delete = 0
+            <if test="interDetail != null and (interDetail.companyId != null and interDetail.companyId != 0)">
+                and company_id = #{interDetail.companyId}
+            </if>
+            <if test="interDetail != null and interDetail.rank != 0">
+                and rank = #{interDetail.rank}
+            </if>
+            <if test="interDetail != null and ( interDetail.question != null and interDetail.question != '')">
+                and question like #{interDetail.question}
+            </if>
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="selectCount" resultType="int">
+        select count(1) from ri_interdetail
+        <where>
+            is_delete = 0
+            <if test="interDetail != null and (interDetail.companyId != null and interDetail.companyId != 0)">
+                and company_id = #{interDetail.companyId}
+            </if>
+            <if test="interDetail != null and interDetail.rank != 0">
+                and rank = #{interDetail.rank}
+            </if>
+            <if test="interDetail != null and ( interDetail.question != null and interDetail.question != '')">
+                and question like #{interDetail.question}
+            </if>
+        </where>
+    </select>
+
+</mapper>

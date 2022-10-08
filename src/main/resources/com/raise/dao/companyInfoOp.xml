@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raise.dao.companyInfoOp">
+
+    <resultMap id="brandResultMap" type="CompanyInfo">
+        <result column="company_id" property="companyId"></result>
+        <result column="inter_date" property="interDate"></result>
+        <result column="company_name" property="companyName"></result>
+        <result column="company_address" property="companyAddress"></result>
+        <result column="inter_user" property="interUser"></result>
+        <result column="is_delete" property="isDelete"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+        <!--        -->
+    </resultMap>
+    <select id="selectByIndex" resultMap="brandResultMap">
+        SELECT * FROM ri_company
+        <where>
+            is_delete = 0
+            <if test="CompanyInfo != null and (CompanyInfo.companyName != null or CompanyInfo.companyName != '')">
+                and company_name like #{CompanyInfo.companyName}
+            </if>
+            <if test="CompanyInfo != null and (CompanyInfo.interUser != null or CompanyInfo.interUser != '')">
+                and inter_user like #{CompanyInfo.interUser}
+            </if>
+        </where>
+         LIMIT #{start},#{pageNum}
+    </select>
+
+    <select id="selectTotalCount" resultType="int">
+        select count(1) from ri_company
+        <where>
+            is_delete = 0
+            <if test="CompanyInfo != null and (CompanyInfo.companyName != null or CompanyInfo.companyName != '')">
+                and company_name like #{CompanyInfo.companyName}
+            </if>
+            <if test="CompanyInfo != null and (CompanyInfo.interUser != null or CompanyInfo.interUser != '')">
+                and inter_user like #{CompanyInfo.interUser}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
